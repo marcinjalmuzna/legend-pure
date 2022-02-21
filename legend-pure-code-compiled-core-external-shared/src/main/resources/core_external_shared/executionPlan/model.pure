@@ -19,7 +19,7 @@ import meta::pure::executionPlan::*;
 import meta::pure::mapping::modelToModel::*;
 import meta::pure::runtime::*;
 
-Class meta::external::shared::format::executionPlan::DataQualityExecutionNode extends ExecutionNode
+Class <<doc.deprecated>> meta::external::shared::format::executionPlan::DataQualityExecutionNode extends ExecutionNode
 {
    enableConstraints : Boolean[1];
    checked           : Boolean[1];   

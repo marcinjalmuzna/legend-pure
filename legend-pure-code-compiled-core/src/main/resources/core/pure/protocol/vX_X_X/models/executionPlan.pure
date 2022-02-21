@@ -55,6 +55,14 @@ Class meta::protocols::pure::vX_X_X::metamodel::executionPlan::FreeMarkerConditi
    falseBlock                    : ExecutionNode[0..1];
 }
 
+Class meta::protocols::pure::vX_X_X::metamodel::executionPlan::DataQualityExecutionNode extends ExecutionNode
+{
+   enableConstraints : Boolean[1];
+   checked           : Boolean[1];
+   fullCheck         : Boolean[0..1];
+   graphFetchTree    : meta::protocols::pure::vX_X_X::metamodel::valueSpecification::raw::GraphFetchTree[0..1];
+}
+
 Class meta::protocols::pure::vX_X_X::metamodel::executionPlan::PlatformImplementation
 {
    _type : String[1];

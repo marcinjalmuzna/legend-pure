@@ -81,6 +81,9 @@ Class meta::pure::router::routing::RoutingState
    classMappingsByClass:Map<Class<Any>,List<SetImplementation>>[1];
    
    isDeepFetchRouting : Boolean[1];
+   
+   checked : Boolean[0..1];
+   fullCheck : Boolean[0..1];
 
    classMappingsForClass(class:Class<Any>[1])
    {
@@ -601,6 +604,8 @@ function meta::pure::router::routing::shouldStop(f:Function<Any>[1], extensions:
       meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__T_MANY_,
       meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__Integer_1__T_MANY_,
       meta::pure::graphFetch::execution::graphFetchChecked_T_MANY__RootGraphFetchTree_1__Checked_MANY_,
+      meta::pure::graphFetch::execution::graphFetchCheckedFull_T_MANY__RootGraphFetchTree_1__Checked_MANY_,
+      meta::pure::dataQuality::check_T_MANY__Checked_MANY_,
       meta::pure::graphFetch::execution::serialize_T_MANY__RootGraphFetchTree_1__String_1_,
       meta::pure::graphFetch::execution::serialize_Checked_MANY__RootGraphFetchTree_1__String_1_,
       meta::pure::tds::tdsRows_TabularDataSet_1__TDSRow_MANY_,
@@ -825,7 +830,7 @@ function meta::pure::router::routing::routeFunctionExpressionFunctionDefinition(
         let newRuntime = $fromMappingUpdates.runtime;
         let newExecutionContext = $fromMappingUpdates.executionContext;
 
-        let v = $fromMappingUpdates.state;
+        let v = $fromMappingUpdates.state->updateCheckedState($fe);
          if ($fe.parametersValues->isEmpty(),
             | ^$v(),
             | // First pass (everything but lambda & ColumnSpecification)
@@ -1045,6 +1050,17 @@ function meta::pure::router::routing::routeFunctionExpressionFunctionDefinition(
          );
      );
   );
+}
+
+function <<access.private>> meta::pure::router::routing::updateCheckedState(state:RoutingState[1], fe:FunctionExpression[1]):RoutingState[1]
+{
+   if($fe.func->in([meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__T_MANY_, meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__Integer_1__T_MANY_]),                               
+      | ^$state(checked = false, fullCheck = false),
+      | if($fe.func->in([meta::pure::graphFetch::execution::graphFetchChecked_T_MANY__RootGraphFetchTree_1__Checked_MANY_, meta::pure::dataQuality::check_T_MANY__Checked_MANY_]),                               
+           | ^$state(checked = true, fullCheck = false),
+           | if($fe.func == meta::pure::graphFetch::execution::graphFetchCheckedFull_T_MANY__RootGraphFetchTree_1__Checked_MANY_,
+                | ^$state(checked = true, fullCheck = true),
+                | $state)))
 }
 
 function meta::pure::router::routing::processAggregationValueFunction(fn:Function<Any>[1], routed:ExtendedRoutedValueSpecification[*], state:RoutingState[1], mapping:Mapping[1], runtime:Runtime[1], executionContext:ExecutionContext[1], vars:Map<VariableExpression, ValueSpecification>[1], inScopeVars:Map<String, List<Any>>[1], extensions:meta::pure::router::extension::RouterExtension[*], debug:DebugContext[1]):RoutingState[1]

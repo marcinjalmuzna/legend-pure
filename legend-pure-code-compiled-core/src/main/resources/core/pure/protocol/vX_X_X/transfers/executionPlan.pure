@@ -73,6 +73,16 @@ function meta::protocols::pure::vX_X_X::transformation::fromPureGraph::execution
                resultType = $seq.resultType->transformResultType($mapping, $extensions),
                resultSizeRange = $seq.resultSizeRange->isEmpty()->if(|[],|$seq.resultSizeRange->toOne()->meta::protocols::pure::vX_X_X::transformation::fromPureGraph::domain::transformMultiplicity())
             ),
+         dq:meta::pure::executionPlan::DataQualityExecutionNode[1]|
+            ^meta::protocols::pure::vX_X_X::metamodel::executionPlan::DataQualityExecutionNode(
+               _type = 'dataQuality',
+               resultType = $dq.resultType->meta::protocols::pure::vX_X_X::transformation::fromPureGraph::executionPlan::transformResultType($mapping, $extensions),
+               resultSizeRange = $dq.resultSizeRange->map(s| $s->meta::protocols::pure::vX_X_X::transformation::fromPureGraph::domain::transformMultiplicity()),
+               enableConstraints = $dq.enableConstraints,
+               checked = $dq.checked,
+               fullCheck = $dq.fullCheck,
+               graphFetchTree = $dq.graphFetchTree->isEmpty()->if(|[],|$dq.graphFetchTree->toOne()->meta::protocols::pure::vX_X_X::transformation::fromPureGraph::valueSpecification::transformGraphFetchTree([], newMap([]->cast(@Pair<String,List<Any>>)), $extensions)->cast(@meta::protocols::pure::vX_X_X::metamodel::valueSpecification::raw::RootGraphFetchTree))
+            ),
          agg:meta::pure::mapping::aggregationAware::AggregationAwareExecutionNode[1]|
             ^meta::protocols::pure::vX_X_X::metamodel::executionPlan::AggregationAwareExecutionNode(
                _type = 'aggregationAware',

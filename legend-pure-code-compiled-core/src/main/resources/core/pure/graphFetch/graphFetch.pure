@@ -36,9 +36,15 @@ function meta::pure::graphFetch::execution::graphFetchChecked<T>(collection: T[*
    $collection->map(e|^Checked<T>(value=$e));
 }
 
+function meta::pure::graphFetch::execution::graphFetchCheckedFull<T>(collection: T[*], graphFetchTree: RootGraphFetchTree<T>[1]):Checked<T>[*]
+{
+   fail('Not implemented!');
+   $collection->map(e|^Checked<T>(value=$e));
+}
+
 function meta::pure::graphFetch::execution::graphFetchFunctions():Function<Any>[*]
 {
- [meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__T_MANY_, meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__Integer_1__T_MANY_, meta::pure::graphFetch::execution::graphFetchChecked_T_MANY__RootGraphFetchTree_1__Checked_MANY_]  
+ [meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__T_MANY_, meta::pure::graphFetch::execution::graphFetch_T_MANY__RootGraphFetchTree_1__Integer_1__T_MANY_, meta::pure::graphFetch::execution::graphFetchChecked_T_MANY__RootGraphFetchTree_1__Checked_MANY_, meta::pure::graphFetch::execution::graphFetchCheckedFull_T_MANY__RootGraphFetchTree_1__Checked_MANY_]  
 }
 
 function meta::pure::graphFetch::execution::serialize<T>(collection: T[*], graphFetchTree: RootGraphFetchTree<T>[1]):String[1]
